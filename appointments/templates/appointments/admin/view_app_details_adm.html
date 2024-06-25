@@ -1,0 +1,653 @@
+{% extends 'appointments/admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+
+        <meta charset="UTF-8">
+        <title>{% block page-title %}Красота | Посмотреть детали заказа - Администратор{% endblock %}</title>
+
+
+    </head>
+
+    <body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+               href="{% url 'profile_adm.html' %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Красота <sup></sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Панель Администратора
+            </div>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'dashboard_adm.html' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Оперативная ситуация</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Вы
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile_adm.html' %}">
+                    <i class="fas fa-fw fa-user-alt"></i>
+                    <span>Профиль</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Другое
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'book_app_adm.html' %}">
+                    <i class="fas fa-fw fa-calendar-plus"></i>
+                    <span>Оформить заказ</span></a>
+            </li>
+
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'appointment_adm.html' %}">
+                    <i class="fas fa-fw fa-calendar"></i>
+                    <span>Заказы</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'customer_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Клиенты</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'engineer_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Мастера</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Администраторы</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    <span>Выход</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+                    <!-- Topbar Search -->
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ adm.first_name }} {{ adm.last_name }}</span>
+                                <img class="img-profile rounded-circle"
+                                     src="{{ adm.image.url }}">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile_adm.html' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Settings
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Activity Log
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Messages -->
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    <!-- End Messages -->
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h1 class="h3 mb-0 text-gray-800">Заказ #{{ app.id }} Детали</h1>
+
+
+                        {% if appointment_details.15 is False %}
+                            <div class="text-center"><a class="btn btn-success"
+                                                        href="{% url 'complete_app_adm_action' app.id %}">
+                                <i class="fa-regular fa-circle-check"></i> Завершить этот заказ</a></div>
+                        {% endif %}
+
+
+                    </div>
+                    <div class="mb-4" style="text-align: right;"><a class="btn btn-danger"
+                                                        href="#">
+                                <i class=""></i> Отменить этот заказ</a></div>
+
+                    <!-- Appointment details -->
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-primary text-uppercase mb-1 text-center">
+                                                Заказ ID
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                {{ app.id }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+
+
+
+
+                        <!-- Earnings (Annual) Card Example -->
+                        <div class="col-xl-4 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-primary text-uppercase mb-1 text-center">
+                                                Статус заказа
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                {% if appointment_details.15 is True %}
+                                                    Завершено
+                                                {% elif appointment_details.15 is False %}
+                                                    Не завершено
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fa-solid fa-circle-check fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-success text-uppercase mb-1 text-center">
+                                                Дата заказа
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                {{ appointment_details.10 }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar-days fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-success text-uppercase mb-1 text-center">
+                                                Время заказа
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                {{ appointment_details.11 }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clock fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+
+                    <!-- Appointment details -->
+                    <div class="row">
+
+                        <div class="col-xl-12 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-warning text-uppercase mb-1 text-center">
+                                                Детали заказа (при поступлении заявки)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                {{ appointment_details.13 }}
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-info fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-warning text-uppercase mb-1 text-center">
+                                                Отзыв клиента (после окончания услуги)
+                                            </div>
+                                            <textarea class="form-control" rows="4" placeholder="Введите отзыв здесь"></textarea>
+
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-info fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-success text-uppercase mb-1 text-center">
+                                                Рейтинг услуги
+                                                (Как клиент оценивает услугу)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                            <select class="form-control" id="ratingSelect1">
+                                                <option value="1">-</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="1">6</option>
+                                                <option value="2">7</option>
+                                                <option value="3">8</option>
+                                                <option value="4">9</option>
+                                                <option value="5">10</option>
+                                            </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-success text-uppercase mb-1 text-center">
+                                                Рейтинг мастера (Как клиент оценивает мастера)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                <select class="form-control" id="ratingSelect2">
+                                                    <option value="1">-</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="1">6</option>
+                                                    <option value="2">7</option>
+                                                    <option value="3">8</option>
+                                                    <option value="4">9</option>
+                                                    <option value="5">10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <!-- Рейтинг клиента Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-primary text-uppercase mb-1 text-center">
+                                                Рейтинг клиента (Как мастер оценивает клиента)
+                                            </div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800 text-center">
+                                                <select class="form-control" id="ratingSelect1">
+                                                    <option value="1">-</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="1">6</option>
+                                                    <option value="2">7</option>
+                                                    <option value="3">8</option>
+                                                    <option value="4">9</option>
+                                                    <option value="5">10</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Материалы для заказа -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xl font-weight-bold text-primary text-uppercase mb-1 text-center">
+                                                Материалы для заказа
+                                            </div>
+                                            <form id="materials_form">
+
+                                                <div class="form-group" id="material_fields">
+                                                    <label>Выберите материалы:</label>
+                                                    <select class="form-control" name="material[]" multiple required>
+                                                        <option value="1">Лак розовый</option>
+                                                        <option value="2">Лак красный</option>
+                                                        <option value="3">Лак синий</option>
+                                                        <!-- Добавьте другие варианты материалов здесь -->
+                                                    </select>
+                                                </div>
+                                                <div id="quantity_fields">
+                                                    <!-- Поля для ввода количества грамм будут добавлены здесь -->
+                                                </div>
+                                                <button type="button" class="btn btn-primary" onclick="addMaterialField()">Добавить материал</button>
+
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            function addMaterialField() {
+                                var materialSelect = document.querySelector('[name="material[]"]');
+                                var selectedMaterials = Array.from(materialSelect.selectedOptions).map(option => option.text);
+
+                                var quantityFieldsDiv = document.getElementById('quantity_fields');
+                                selectedMaterials.forEach(material => {
+                                    var label = document.createElement('label');
+                                    label.textContent = 'Количество грамм для ' + material + ':';
+                                    var input = document.createElement('input');
+                                    input.type = 'number';
+                                    input.className = 'form-control';
+                                    input.name = 'quantity_' + material.replace(/\s+/g, '_').toLowerCase();
+                                    input.required = true;
+                                    quantityFieldsDiv.appendChild(label);
+                                    quantityFieldsDiv.appendChild(input);
+                                    quantityFieldsDiv.appendChild(document.createElement('br'));
+                                });
+                            }
+                        </script>
+
+
+                    </div>
+
+
+
+
+
+                    <!-- Content Row: Completed Appointments -->
+                    <div class="row">
+                        <!-- Content Column: Upcoming Appointments -->
+                        <div class="col-lg-6 mb-4">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Детали клиента</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Имя клиента</th>
+
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ cust.id }}</td>
+                                                <td>{{ appointment_details.3 }} {{ appointment_details.4 }}</td>
+
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 mb-4">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Детали мастера</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Имя мастера</th>
+                                                <th>Специальность</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            <tr>
+                                                <td>{{ eng.id }}</td>
+                                                <td>{{ appointment_details.0 }} {{ appointment_details.1 }}</td>
+                                                <td>{{ appointment_details.2 }}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <div class="col-auto">
+                            <div class="text-center">
+                                <a class="btn btn-primary" href="{% url 'view_all_app_adm.html' %}">Вернуться к просмотру заказов</a>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <div class="text-center">
+                                <a class="btn btn-primary" href="#">Обновить информацию о заказе</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="divider-space-50"></div>
+
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Красота 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    </body>
+
+    </html>
+
+{% endblock %}

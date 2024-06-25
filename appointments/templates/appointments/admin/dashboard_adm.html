@@ -1,0 +1,485 @@
+{% extends 'appointments/admin/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block content %}
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block page-title %}Красота | Оперативная ситуация - Администратор {% endblock %}</title>
+    </head>
+
+    <body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center"
+               href="{% url 'profile_adm.html' %}">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3">Красота <sup></sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Панель администратора
+            </div>
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item active">
+                <a class="nav-link" href="{% url 'dashboard_adm.html' %}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>Оперативная ситуация</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Вы
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile_adm.html' %}">
+                    <i class="fas fa-fw fa-user-alt"></i>
+                    <span>Профиль</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Другое
+            </div>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'book_app_adm.html' %}">
+                    <i class="fas fa-fw fa-calendar-plus"></i>
+                    <span>Оформить заказ</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'appointment_adm.html' %}">
+                    <i class="fas fa-fw fa-calendar"></i>
+                    <span>Заказы</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'customer_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Клиенты</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'engineer_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Мастера</span></a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'admin_adm.html' %}">
+                    <i class="fas fa-fw fa-table"></i>
+                    <span>Администраторы</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">
+                    <i class="fas fa-arrow-right-from-bracket"></i>
+                    <span>Выход</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider d-none d-md-block">
+
+            <!-- Sidebar Toggler (Sidebar) -->
+            <div class="text-center d-none d-md-inline">
+                <button class="rounded-circle border-0" id="sidebarToggle"></button>
+            </div>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+
+
+
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                 aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                               placeholder="Search for..." aria-label="Search"
+                                               aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ adm.first_name }} {{ adm.last_name }}</span>
+                                <img class="img-profile rounded-circle" src="{{ adm.image.url }}" alt="">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                 aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile_adm.html' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Профиль
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Настройки
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Журнал активности
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Выход
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Оперативная ситуация</h1>
+                        <div class="dropdown">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="reportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Создать отчет
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="reportDropdown">
+
+                                <a class="dropdown-item" href="{% url 'dl_app_report_action' pk=1 %}">Отчет по услугам</a>
+                                <a class="dropdown-item" href="{% url 'dl_app_report_action' pk=1 %}">Отчет по мастерам</a>
+                                <a class="dropdown-item" href="{% url 'dl_app_report_action' pk=1 %}">Отчет по материалам</a>
+                                <a class="dropdown-item" href="{% url 'dl_app_report_action' pk=1 %}">Отчет по выполненным заказам</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-l font-weight-bold text-primary text-uppercase mb-1">
+                                                Завершённых заказов за месяц
+                                            </div>
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ app_total }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-danger shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-l font-weight-bold text-danger text-uppercase mb-1">
+                                                Администраторов в ожидании одобрения заявки
+                                            </div>
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_adm_total }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-l font-weight-bold text-success text-uppercase mb-1">
+                                                Новых клиентов за месяц
+                                            </div>
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ cust_total }}</div>
+
+                                            </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Pending Requests Card Example -->
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-l font-weight-bold text-warning text-uppercase mb-1">
+                                                Мастеров в ожидании одобрения заявки
+                                            </div>
+
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending_eng_total }}</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-screwdriver-wrench fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Earnings (Monthly) Card Example -->
+                        {% comment %}
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-info shadow h-100 py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                                    Tasks
+                                                </div>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%
+                                                        </div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="progress progress-sm mr-2">
+                                                            <div class="progress-bar bg-info" role="progressbar"
+                                                                 style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                                 aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>{% endcomment %}
+
+                    </div>
+
+                    <!-- Content Row -->
+                    <div class="row">
+
+                        <!-- Content Column: Recent Appointments -->
+
+
+                        <!-- Content Column: Recent Admins -->
+                        <div class="col-lg-12 mb-4">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Одобрение заявок администраторов</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Администратор</th>
+                                                <th>Одобрение</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {% for a in adm_det %}
+                                                <tr>
+                                                    <td>{{ a.id }}</td>
+                                                    <td>{{ a.first_name }} {{ a.last_name }}</td>
+                                                    {% if a.status is True %}
+                                                        <td style="background-color: lightgreen; font-weight: bold">
+                                                            Одобрение
+                                                        </td>
+                                                    {% elif a.status is False %}
+                                                        <td style="background-color: lightyellow">В ожидании</td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-end">
+                                        <a class="btn btn-outline-primary"
+                                           href="{% url 'admin_adm.html' %}">
+                                            Посмотреть всех администраторов</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Content Column: Recent Customers -->
+
+
+                        <!-- Content Column: Recent Engineers -->
+                        <div class="col-lg-12 mb-4">
+                            <!-- DataTales Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Одобрение заявок мастеров</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Мастер</th>
+                                                <th>Специальность</th>
+                                                <th>Одобрение</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+                                            {% for a in eng %}
+                                                <tr>
+                                                    <td>{{ a.id }}</td>
+                                                    <td>{{ a.first_name }} {{ a.last_name }}</td>
+                                                    <td>{{ a.service_field }}</td>
+                                                    {% if a.status is True %}
+                                                        <td style="background-color: lightgreen; font-weight: bold">
+                                                            Одобрение
+                                                        </td>
+                                                    {% elif a.status is False %}
+                                                        <td style="background-color: lightyellow">В ожидании</td>
+                                                    {% endif %}
+                                                    {% comment %}
+                                                        <td class="text-center"><a class="btn btn-outline-primary"
+                                                                                   href="{% url 'view_app_details_eng.html' a.0 %}">Детали</a>
+                                                        </td>{% endcomment %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="text-end">
+                                        <a class="btn btn-outline-primary"
+                                           href="{% url 'engineer_adm.html' %}">
+                                            Посмотреть всех мастеров</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+                <h1 class="h3 mb-0 text-gray-800" style="margin-left: 25px;">Расписание</h1>
+                <iframe src="https://docs.google.com/spreadsheets/d/1OUzsvz_RsDB1oCPjTJLVBsYeYLdPN7CANPBUoxwBGik/edit?usp=drive_link" width="93%" height="600" style="margin-left: 40px;"></iframe>
+
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; Красота 2024</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+
+    </body>
+
+    </html>
+
+{% endblock %}
